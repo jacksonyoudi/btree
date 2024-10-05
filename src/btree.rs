@@ -1,0 +1,2 @@
+pub const MAX_BRANCHING_FACTOR: usize = 200;
+pub const NODE_KEYS_LIMIT: usize = MAX_BRANCHING_FACTOR - 1;
