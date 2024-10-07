@@ -1,5 +1,5 @@
 use std::cmp::Ordering;
-use std::io::Error;
+use crate::error::Error;
 use crate::page_layout::PTR_SIZE;
 
 #[derive(Clone, Eq, PartialEq, Debug)]
@@ -8,7 +8,7 @@ pub struct Offset(pub usize);
 /// 将长度为len(usize)的数组转换为大端整数形式的usize。
 impl TryFrom<[u8; PTR_SIZE]> for Offset {
     type Error = Error;
-    fn try_from(value: [u8; PTR_SIZE]) -> Result<Self, Self::Error> {
+    fn try_from(value: [u8; PTR_SIZE]) -> Result<Offset, Error> {
         Ok(Offset(usize::from_be_bytes(value)))
     }
 }
@@ -75,8 +75,8 @@ impl From<u8> for NodeType {
 }
 
 // Converts a NodeType to a byte.
-impl From<NodeType> for u8 {
-    fn from(value: NodeType) -> Self {
+impl From<&NodeType> for u8 {
+    fn from(value: &NodeType) -> Self {
         match value {
             NodeType::Internal(_, _) => 0x01,
             NodeType::Leaf(_) => 0x02,
